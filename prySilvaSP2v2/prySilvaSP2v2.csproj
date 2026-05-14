@@ -34,6 +34,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>195183.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Geckofx-Core, Version=60.0.56.0, Culture=neutral, PublicKeyToken=3209ac31600d1857, processorArchitecture=MSIL">
       <HintPath>..\packages\Geckofx60.64.60.0.56\lib\net45\Geckofx-Core.dll</HintPath>
@@ -120,6 +123,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="195183.ico" />
+    <Content Include="BD\Academia.mdb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Firefox\AccessibleHandler.dll" />
     <Content Include="Firefox\AccessibleMarshal.dll" />
     <Content Include="Firefox\d3dcompiler_47.dll" />

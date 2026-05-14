@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmVerVideo));
             this.txtLink = new System.Windows.Forms.TextBox();
             this.lblLink = new System.Windows.Forms.Label();
             this.cmdSalir = new System.Windows.Forms.Button();
@@ -142,6 +143,7 @@
             this.Controls.Add(this.txtIDTema);
             this.Controls.Add(this.lblTema);
             this.Controls.Add(this.lblCantante);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "frmVerVideo";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Ver Video";
