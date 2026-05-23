@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Gecko;
+using Microsoft.Web.WebView2.WinForms;
 
 namespace prySilvaSP2v2
 {
@@ -20,8 +21,9 @@ namespace prySilvaSP2v2
 
         private CConexion conexion; 
         private CCantante cantante; 
-        private CTema tema; 
+        private CTema tema;
         private GeckoWebBrowser geckoWebBrowser;
+        private WebView2 webView;
 
         private void frmVerVideo_Load(object sender, EventArgs e)
         {
@@ -61,27 +63,45 @@ namespace prySilvaSP2v2
             txtLink.Text = tema.ObtenerLinkTemaCantante(IdTema, IdCantante); 
         }
 
-        private void cmdVerVideo_Click(object sender, EventArgs e)
+        // Cambiado a async para usar await correctamente
+        private async void cmdVerVideo_Click(object sender, EventArgs e)
         {
-            if (txtLink.Text != "")
-            {    
-                Xpcom.Initialize("Firefox"); // iniciar el componente de Firefox 
-                
-                geckoWebBrowser = new GeckoWebBrowser { Dock = DockStyle.Fill }; // crear el control webBrowser 
-                grpBrowser.Controls.Add(geckoWebBrowser); // agregarlo al groupBox 
-                geckoWebBrowser.Navigate(txtLink.Text); // navegar a la URL   
+            if (!string.IsNullOrWhiteSpace(txtLink.Text))
+            {
+                // Si quieres usar Gecko, el código anterior era válido, pero aquí usamos WebView2
+                if (webView == null)
+                {
+                    webView = new WebView2
+                    {
+                        Dock = DockStyle.Fill
+                    };
+
+                    grpBrowser.Controls.Add(webView);
+
+                    // Inicializar el CoreWebView2 (necesita runtime)
+                    await webView.EnsureCoreWebView2Async(null);
+                }
+
+                try
+                {
+                    webView.Source = new Uri(txtLink.Text);
+                }
+                catch (UriFormatException)
+                {
+                    MessageBox.Show("El enlace no es una URL válida.", "URL inválida", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
             } 
         }
 
         private void cmdSalir_Click(object sender, EventArgs e)
         {
             conexion.Desconectar();     
-            
-            // controlar el estado del webBrowser
-            if(!(geckoWebBrowser is null))     
-            {   
-                geckoWebBrowser.Stop(); 
-                geckoWebBrowser.Dispose();     
+
+            // Liberar WebView2 si existe
+            if (webView != null)
+            {
+                webView.Dispose();
+                webView = null;
             }     
             
             Close();
